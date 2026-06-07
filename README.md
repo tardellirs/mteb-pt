@@ -69,7 +69,7 @@ Full per-task evaluation scripts and Modal-based job templates are in `scripts/`
 
 ## Maintainer
 
-**Ricardo S. Tardelli** — IFSP, São Paulo, Brazil
+**Tardelli Stekel** — IFSP, São Paulo, Brazil
 Email: <stekel@ifsp.edu.br>
 
 Contributions, corrections, and discussion all welcome via Issues or HF Discussions.
@@ -79,7 +79,7 @@ Contributions, corrections, and discussion all welcome via Issues or HF Discussi
 ```bibtex
 @misc{mteb-portuguese-2026,
   title  = {MTEB Portuguese: A Massive Text Embedding Benchmark for Brazilian Portuguese},
-  author = {Tardelli, Ricardo S.},
+  author = {Stekel, Tardelli},
   year   = {2026},
   url    = {https://huggingface.co/spaces/mteb-pt/leaderboard}
 }
