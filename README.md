@@ -15,16 +15,33 @@ A public benchmark for evaluating text embedding models on **Brazilian Portugues
 - Headline metric **mean_16** = average across all 16 tasks
 - Per-task scores, per-query parquets, and reproduction scripts all public
 
-## Task suite
+## Task suite (16 headline tasks)
 
-| Category | Tasks |
-|---|---|
-| Classification | HateBR, OffComBR, TweetSentBR, ToxSynPT |
-| Pair classification (NLI) | AssinRTE, InferBR |
-| STS | AssinSTS |
-| Clustering | MedPTClustering, WikipediaPTCategoriesClusteringP2P |
-| Retrieval | Quati (Pool), JurisTCU, BRTaxQAR, FaQuADIR, MedPTRetrieval |
-| Reranking | QuatiReranking, JurisTCUReranking |
+Each task wrapper uses upstream data pinned to a specific revision. Click a source for the
+original dataset / paper.
+
+| Task | Category | Source |
+|---|---|---|
+| [HateBR](https://aclanthology.org/2022.lrec-1.777/) | Classification | Vargas et al. 2022 (LREC) — [HF dataset](https://huggingface.co/datasets/franciellevargas/HateBR) |
+| [OffComBR](https://huggingface.co/datasets/fernandabufon/offcombr) | Classification | Pelle & Moreira 2017 — HF mirror |
+| [TweetSentBR](http://www.lrec-conf.org/proceedings/lrec2018/summaries/389.html) | Classification | Brum & Nunes 2018 (LREC) |
+| [ToxSynPT](https://huggingface.co/datasets/AKCIT/ToxSyn-PT) | Classification | AKCIT |
+| [AssinRTE](https://aclanthology.org/2020.lrec-1.319/) | Pair-classification (NLI) | Real et al. 2020 (LREC) — [HF dataset](https://huggingface.co/datasets/nilc-nlp/assin) |
+| [InferBR](https://aclanthology.org/2024.lrec-main.788/) | Pair-classification (NLI) | Rodrigues et al. 2024 (LREC) |
+| [AssinSTS](https://aclanthology.org/2020.lrec-1.319/) | STS | Real et al. 2020 (LREC) — [HF dataset](https://huggingface.co/datasets/nilc-nlp/assin) |
+| [MedPTClustering](https://huggingface.co/datasets/AKCIT/MedPT) | Clustering | AKCIT |
+| [WikipediaPTCategoriesClusteringP2P](https://huggingface.co/datasets/tardellirs/mteb-pt-wikipedia-categories) | Clustering | Wikipedia-derived (this benchmark) |
+| [Quati](https://aclanthology.org/2024.stil-1.19/) | Retrieval (Pool) | Bueno et al. 2024 (STIL) — [HF dataset](https://huggingface.co/datasets/unicamp-dl/quati) |
+| [JurisTCU](https://huggingface.co/datasets/LeandroRibeiro/JurisTCU) | Retrieval | Ribeiro et al. — TCU rulings |
+| [BRTaxQAR](https://huggingface.co/datasets/unicamp-dl/BR-TaxQA-R) | Retrieval | UNICAMP-DL |
+| [FaQuADIR](https://github.com/liafacom/faquad) | Retrieval | Sayama et al. 2019 — [HF mirror](https://huggingface.co/datasets/eraldoluis/faquad) |
+| [MedPTRetrieval](https://huggingface.co/datasets/AKCIT/MedPT) | Retrieval | AKCIT |
+| [QuatiReranking](https://aclanthology.org/2024.stil-1.19/) | Reranking | Bueno et al. 2024 — [HF dataset](https://huggingface.co/datasets/unicamp-dl/quati) |
+| [JurisTCUReranking](https://huggingface.co/datasets/LeandroRibeiro/JurisTCU) | Reranking | Ribeiro et al. — TCU rulings |
+
+Two additional tasks are evaluated but **excluded from the headline `mean_16`**: CSTNewsClustering (degenerate — all models score 1.000) and BBCNewsPTClustering (BBC copyright concern). They remain in the raw results for transparency.
+
+If you cite a specific task in your work, please cite the **original task source** alongside this benchmark.
 
 ## Submit a new model
 
