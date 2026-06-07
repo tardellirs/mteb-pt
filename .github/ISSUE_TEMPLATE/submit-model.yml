@@ -1,0 +1,102 @@
+name: Submit a model
+description: Add a new embedding model to the MTEB Portuguese leaderboard
+title: "[Model] <model_id>"
+labels: ["submission", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! Before submitting, please make sure you have:
+        1. The model's HuggingFace `org/repo` (or commercial vendor product name)
+        2. Per-task JSON result files for the 16 headline tasks
+        3. A reproducible evaluation command
+
+  - type: input
+    id: model_id
+    attributes:
+      label: model_id
+      description: Full HF repo path (e.g. `Qwen/Qwen3-Embedding-8B`) or vendor product (e.g. `openai/text-embedding-3-large`)
+      placeholder: org/repo-name
+    validations:
+      required: true
+
+  - type: dropdown
+    id: model_type
+    attributes:
+      label: Model type
+      options:
+        - Open weights
+        - Commercial API / closed
+    validations:
+      required: true
+
+  - type: input
+    id: params
+    attributes:
+      label: Parameter count (millions, if known)
+      placeholder: "300, 7600, etc. — leave blank for closed APIs"
+
+  - type: input
+    id: license
+    attributes:
+      label: License
+      placeholder: "apache-2.0, mit, gemma, proprietary, etc."
+
+  - type: textarea
+    id: scores
+    attributes:
+      label: Headline scores
+      description: Paste per-task scores in the format `task=value` (one per line). At minimum we need the 16 headline tasks.
+      placeholder: |
+        hatebr=0.831
+        offcombr=0.754
+        tweetsentbr=0.653
+        toxsynpt=0.859
+        inferbr=0.875
+        assinrte=0.876
+        assinsts=0.789
+        medptclustering=0.749
+        wikipediaptcategoriesclusteringp2p=0.694
+        quati=0.544
+        juristcu=0.619
+        brtaxqar=0.373
+        faquadir=0.841
+        medptretrieval=0.777
+        quatireranking=0.613
+        juristcureranking=0.765
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction command
+      description: Provide a runnable command (Python snippet, shell script, or `mteb` CLI invocation) that reproduces these numbers from scratch.
+      placeholder: |
+        python -m mteb \
+          --model intfloat/multilingual-e5-large-instruct \
+          --tasks HateBR OffComBR TweetSentBR ToxSynPT InferBR AssinRTE AssinSTS \
+                  MedPTClustering WikipediaPTCategoriesClusteringP2P \
+                  Quati JurisTCU BRTaxQAR FaQuADIR MedPTRetrieval \
+                  QuatiReranking JurisTCUReranking \
+          --output_folder ./results
+    validations:
+      required: true
+
+  - type: textarea
+    id: json_attachment
+    attributes:
+      label: Per-task JSON files
+      description: Either paste a link to a GitHub gist / HF dataset with the JSONs, or attach them by dragging-and-dropping into this textbox after creating the issue.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I confirm scores were obtained with default model config (no fine-tuning on benchmark tasks)
+          required: true
+        - label: I confirm no contamination — the model was not trained on any of the 16 task datasets
+          required: true

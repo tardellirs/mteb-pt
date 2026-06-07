@@ -1,0 +1,66 @@
+name: Propose a new task
+description: Suggest a new evaluation task for MTEB Portuguese
+title: "[Task] <task-name>"
+labels: ["task-proposal", "needs-review"]
+body:
+  - type: input
+    id: task_name
+    attributes:
+      label: Task name
+      placeholder: "e.g. PortugueseQAClustering"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Classification
+        - Pair classification (NLI)
+        - STS
+        - Clustering
+        - Retrieval
+        - Reranking
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: dataset_source
+    attributes:
+      label: Source dataset (HF / paper / URL)
+      placeholder: "e.g. https://huggingface.co/datasets/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: license_provenance
+    attributes:
+      label: License and provenance
+      description: What license does the data use? Is the source native PT-BR or translated?
+    validations:
+      required: true
+
+  - type: input
+    id: n_samples
+    attributes:
+      label: Approximate number of samples
+      placeholder: "e.g. 5000 train / 1000 test"
+
+  - type: textarea
+    id: discrimination
+    attributes:
+      label: Discrimination evidence
+      description: |
+        Does this task discriminate between embedding models? Ideally provide preliminary scores from 2–3 different-quality models (e.g. small e5 vs Qwen3-8B) to show the gap is non-trivial.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this task valuable for the Portuguese benchmark? What capability does it measure that current tasks miss?
+    validations:
+      required: true
