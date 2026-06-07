@@ -47,7 +47,7 @@ If you cite a specific task in your work, please cite the **original task source
 
 Two channels, pick whichever fits:
 
-- **HF Discussion** on the results dataset → [open a thread here](https://huggingface.co/datasets/mteb-pt/mteb-pt-results/discussions/new) and attach the eval JSONs
+- **HF Discussion** on the leaderboard Space → [open a thread here](https://huggingface.co/spaces/mteb-pt/leaderboard/discussions/new) and attach the eval JSONs
 - **GitHub Issue** → use the [model submission template](https://github.com/tardellirs/mteb-pt/issues/new?template=submit-model.yml)
 
 Required for a submission:

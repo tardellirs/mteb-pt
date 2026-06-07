@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: 💬 Discuss on HuggingFace
-    url: https://huggingface.co/datasets/mteb-pt/mteb-pt-results/discussions
-    about: For general questions, model submissions also work via HF Discussions.
+  - name: 💬 Discuss on the Leaderboard Space
+    url: https://huggingface.co/spaces/mteb-pt/leaderboard/discussions
+    about: Model submissions and questions also work via HF Discussions on the Space.
   - name: 📧 Direct contact
     url: mailto:stekel@ifsp.edu.br
     about: Reach the maintainer directly (Tardelli Stekel, IFSP).
