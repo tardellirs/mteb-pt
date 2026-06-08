@@ -23,6 +23,68 @@ A public benchmark for evaluating text embedding models on **Brazilian Portugues
 - Headline metric **mean_16** = average across all 16 tasks
 - Per-task scores, per-query parquets, and reproduction scripts all public
 
+## Quickstart
+
+Install the package directly from GitHub:
+
+```bash
+pip install git+https://github.com/tardellirs/mteb-pt.git
+```
+
+Evaluate any sentence-transformers model on a single MTEB-PT task:
+
+```python
+import mteb_pt.register   # registers our 16 tasks with the global mteb registry
+import mteb
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("intfloat/multilingual-e5-large-instruct")
+task  = mteb.get_task("HateBR")
+mteb.MTEB(tasks=[task]).run(model, output_folder="./results")
+```
+
+Or run the **full 16-task headline evaluation** in one command:
+
+```bash
+python examples/run_headline.py \
+    --model intfloat/multilingual-e5-large-instruct \
+    --output ./results
+```
+
+This reproduces a row of the public leaderboard. Total runtime is approximately 30–60 minutes on a single A10G GPU depending on model size.
+
+Compute the **paired-bootstrap p-value** between two model evaluations (reproduces paper Finding F1):
+
+```bash
+python examples/compute_bootstrap_ci.py \
+    --results-a ./results/intfloat__multilingual-e5-large-instruct/mean_16.json \
+    --results-b ./results/Qwen__Qwen3-Embedding-8B/mean_16.json
+```
+
+## Package layout
+
+```
+mteb_pt/
+├── __init__.py                       # HEADLINE_TASKS list + TASKS_BY_CATEGORY map
+├── register.py                       # side-effect: registers all 16 tasks with mteb
+├── stats.py                          # bootstrap CIs + paired significance helpers
+└── tasks/
+    ├── classification/por/           # HateBR, OffComBR, ToxSynPT, TweetSentBR
+    ├── pair_classification/por/      # AssinRTE, InferBR
+    ├── sts/por/                      # AssinSTS
+    ├── clustering/por/               # MedPTClustering, WikipediaPTCategoriesClusteringP2P
+    └── retrieval/por/                # Quati, JurisTCU, BRTaxQAR, FaQuADIR, MedPTRetrieval
+                                      # + reranking variants for Quati and JurisTCU
+
+examples/
+├── quickstart.py                     # 1 model × 1 task smoke test (~5 min CPU)
+├── run_headline.py                   # full 16-task evaluation on one model
+└── compute_bootstrap_ci.py           # paired-bootstrap p-value between two models
+
+tests/
+└── test_register.py                  # smoke tests: all 16 tasks resolve via mteb.get_task
+```
+
 ## Task suite (16 headline tasks)
 
 Each task wrapper uses upstream data pinned to a specific revision. Click a source for the
@@ -73,24 +135,6 @@ A task is a candidate for inclusion if it:
 - Discriminates across embedding models (i.e. not degenerate)
 
 Open an [issue using the task proposal template](https://github.com/tardellirs/mteb-pt/issues/new?template=propose-task.yml) describing the dataset, license, size, and discrimination evidence.
-
-## Reproduce locally
-
-```bash
-pip install mteb sentence-transformers
-git clone https://github.com/tardellirs/mteb-pt
-cd mteb-pt
-# Each task is registered when you import mteb_pt
-python -c "
-import mteb_pt.register
-import mteb
-from sentence_transformers import SentenceTransformer
-model = SentenceTransformer('intfloat/multilingual-e5-large-instruct')
-mteb.MTEB(tasks=[mteb.get_task('HateBR')]).run(model)
-"
-```
-
-Full per-task evaluation scripts and Modal-based job templates are in `scripts/`.
 
 ## Maintainer
 
