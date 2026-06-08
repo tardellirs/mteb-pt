@@ -11,8 +11,10 @@ Complements HateBR (Instagram) and OffComBR (web/news) with a SYNTHETIC
 (LLM-generated) toxic corpus. Tests whether embeddings learned on real
 text generalize to LLM-synthesized adversarial examples.
 
-License: not declared in dataset card. Recorded as "not specified"
-pending author confirmation.
+License: CC-BY-4.0, inherited from the dataset paper (arXiv:2506.10245)
+which is released under CC-BY 4.0 and states "we publicly release ToxSyn
+at HuggingFace to foster reproducible research." ToxSyn-PT is fully
+synthetic (LLM-generated) with no underlying third-party copyright.
 """
 
 from __future__ import annotations
@@ -52,7 +54,7 @@ class ToxSynPT(AbsTaskClassification):
         date=("2024-01-01", "2024-12-31"),
         domains=["Social", "Written"],
         task_subtypes=["Sentiment/Hate speech"],
-        license="not specified",
+        license="cc-by-4.0",
         annotations_creators="LM-generated",
         dialect=["brazilian"],
         sample_creation="LM-generated and verified",
