@@ -12,13 +12,12 @@ def test_headline_tasks_count() -> None:
     assert len(mteb_pt.HEADLINE_TASKS) == 16
 
 
-def test_tasks_by_category_count_matches() -> None:
-    """Per-category groupings should sum to 16."""
-    n = sum(len(v) for v in mteb_pt.TASKS_BY_CATEGORY.values())
-    assert n == 16
+def test_tasks_by_category_matches_headline_set() -> None:
+    """Per-category groupings, taken together, must equal HEADLINE_TASKS exactly.
 
-
-def test_all_tasks_in_headline_appear_in_some_category() -> None:
+    Catches the two-source-of-truth drift bug where someone updates
+    HEADLINE_TASKS without updating TASKS_BY_CATEGORY (or vice versa).
+    """
     flat = {t for v in mteb_pt.TASKS_BY_CATEGORY.values() for t in v}
     assert flat == set(mteb_pt.HEADLINE_TASKS)
 
