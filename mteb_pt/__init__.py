@@ -105,4 +105,8 @@ TASKS_BY_CATEGORY: dict[str, list[str]] = {
     "Reranking": ["QuatiReranking", "JurisTCUReranking"],
 }
 
-__all__ = ["HEADLINE_TASKS", "TASKS_BY_CATEGORY", "__version__"]
+#: License-pending / gated tasks — evaluated but kept OUT of the headline suite
+#: until access + license clear (PortuLexRRIP: gated, license unconfirmed).
+PENDING_TASKS: list[str] = ["PortuLexRRIP"]
+
+__all__ = ["HEADLINE_TASKS", "PENDING_TASKS", "TASKS_BY_CATEGORY", "__version__"]

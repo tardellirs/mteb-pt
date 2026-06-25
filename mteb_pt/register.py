@@ -24,6 +24,7 @@ from mteb.get_tasks import _TASKS_REGISTRY
 
 from mteb_pt.tasks.classification.por.factckbr import FactckBrClassification
 from mteb_pt.tasks.classification.por.hate_br import HateBR
+from mteb_pt.tasks.classification.por.portulex_rrip import PortuLexRRIP
 from mteb_pt.tasks.classification.por.toxsyn_pt import ToxSynPT
 from mteb_pt.tasks.clustering.por.camara_proposicoes import CamaraProposicoesClustering
 from mteb_pt.tasks.clustering.por.juris_tcu_clustering import JurisTCUClusteringP2P
@@ -56,6 +57,7 @@ _TASKS_TO_REGISTER = [
     HateBR,
     FactckBrClassification,
     ToxSynPT,
+    PortuLexRRIP,
     AssinRTE,
     InferBR,
     AssinSTS,

@@ -38,6 +38,7 @@ import time
 
 import mteb
 
+import mteb_pt
 import mteb_pt.register as register
 
 # Registered for backward-compat but NOT part of the v2 native suite.
@@ -47,7 +48,8 @@ _PRIORITY = {"Retrieval": 0, "Reranking": 1, "Clustering": 2}
 
 
 def v2_tasks():
-    """The 26-task native suite: our 25 registered tasks + Assin2STS (upstream, native NILC)."""
+    """The MTEB(por, v2) suite: the 26 headline tasks + any PENDING tasks (e.g.
+    PortuLexRRIP, gated/license-pending) registered in mteb_pt.register."""
     tasks = [cls() for cls in register._TASKS_TO_REGISTER if cls.metadata.name not in _EXCLUDED]
     tasks.append(mteb.get_task("Assin2STS"))
     tasks.sort(key=lambda t: _PRIORITY.get(t.metadata.type, 9))
@@ -57,9 +59,10 @@ def v2_tasks():
 def main(model_names: list[str]) -> None:
     tasks = v2_tasks()
     bs = int(os.environ.get("MTEB_BATCH_SIZE", "64"))
+    n_pending = sum(1 for t in tasks if t.metadata.name in mteb_pt.PENDING_TASKS)
     print(
-        f"MTEB(por,v2): {len(tasks)} tasks | order={[t.metadata.name for t in tasks][:4]}... "
-        f"| HF_HOME={os.environ.get('HF_HOME', 'default')} "
+        f"MTEB(por,v2): {len(tasks)} tasks ({len(tasks) - n_pending} headline + {n_pending} pending: "
+        f"{mteb_pt.PENDING_TASKS}) | HF_HOME={os.environ.get('HF_HOME', 'default')} "
         f"| MTEB_CACHE={os.environ.get('MTEB_CACHE', '~/.cache/mteb')} | batch_size={bs}",
         flush=True,
     )
