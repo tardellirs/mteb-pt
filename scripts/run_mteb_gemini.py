@@ -42,7 +42,7 @@ CACHE = os.environ.get("MTEB_CACHE", os.path.expanduser("~/.cache/mteb"))
 RESULTS = os.path.join(CACHE, "results")
 SYNC_EVERY = int(os.environ.get("HF_SYNC_SECONDS", "120"))
 TOKEN = os.environ.get("HF_TOKEN")
-MODEL_ID = "gemini-embedding-001"
+MODEL_ID = os.environ.get("GEMINI_MODEL", "gemini-embedding-001")
 DIM = 3072
 BATCH_THRESHOLD = int(os.environ.get("GEMINI_BATCH_THRESHOLD", "2000"))
 # ~4MB/job (~1.2M tokens); MAX_PENDING jobs concurrent keeps enqueued < Tier-2 5M-token cap.
@@ -85,7 +85,7 @@ class GeminiModel(AbsEncoder):
     def __init__(self):
         self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ["GOOGLE_API_KEY"])
         self.mteb_model_meta = ModelMeta(
-            loader=None, name="google/gemini-embedding-001", revision="api",
+            loader=None, name=f"google/{MODEL_ID}", revision="api",
             release_date="2025-06-01", languages=["por-Latn"], n_parameters=None,
             memory_usage_mb=None, max_tokens=2048, embed_dim=DIM, license=None,
             open_weights=False, public_training_code=None, public_training_data=None,
