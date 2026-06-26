@@ -69,16 +69,20 @@ def main(model_names: list[str]) -> None:
     for mname in model_names:
         t0 = time.time()
         print(f"\n=== model: {mname} ===", flush=True)
-        model = mteb.get_model(mname)
-        # only-missing => resumable; raise_error=False => one bad task doesn't kill the model run.
-        mteb.evaluate(
-            model,
-            tasks=tasks,
-            overwrite_strategy="only-missing",
-            encode_kwargs={"batch_size": bs},
-            raise_error=False,
-        )
-        print(f"=== {mname} done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
+        try:
+            model = mteb.get_model(mname)
+            # only-missing => resumable; raise_error=False => one bad task doesn't kill the model run.
+            mteb.evaluate(
+                model,
+                tasks=tasks,
+                overwrite_strategy="only-missing",
+                encode_kwargs={"batch_size": bs},
+                raise_error=False,
+            )
+            print(f"=== {mname} done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
+        except Exception as e:  # a bad model must not halt the whole fleet
+            print(f"=== {mname} FAILED: {type(e).__name__}: {str(e)[:200]} ===", flush=True)
+    print("=== FLEET RUN COMPLETE ===", flush=True)
 
 
 if __name__ == "__main__":
