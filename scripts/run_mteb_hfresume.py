@@ -153,7 +153,7 @@ def main(model_names: list[str]) -> None:
                     model_kwargs={"torch_dtype": _torch.bfloat16},
                 )
             mteb.evaluate(
-                model, tasks=tasks, overwrite_strategy="only-missing",
+                model, tasks=tasks, overwrite_strategy=os.environ.get("MTEB_OVERWRITE", "only-missing"),
                 encode_kwargs={"batch_size": bs}, raise_error=False,
             )
             print(f"=== {mname} done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
