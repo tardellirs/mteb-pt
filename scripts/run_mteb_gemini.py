@@ -44,7 +44,7 @@ SYNC_EVERY = int(os.environ.get("HF_SYNC_SECONDS", "120"))
 TOKEN = os.environ.get("HF_TOKEN")
 MODEL_ID = os.environ.get("GEMINI_MODEL", "gemini-embedding-001")
 DIM = 3072
-BATCH_THRESHOLD = int(os.environ.get("GEMINI_BATCH_THRESHOLD", "2000"))
+BATCH_THRESHOLD = int(os.environ.get("GEMINI_BATCH_THRESHOLD", "100000000"))  # Batch mode produces broken embeddings -> sync by default
 # ~4MB/job (~1.2M tokens); MAX_PENDING jobs concurrent keeps enqueued < Tier-2 5M-token cap.
 CHUNK_CHARS = int(os.environ.get("GEMINI_CHUNK_CHARS", "4000000"))
 MAX_PENDING = int(os.environ.get("GEMINI_MAX_PENDING", "4"))
