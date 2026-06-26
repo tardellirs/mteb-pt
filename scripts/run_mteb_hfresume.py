@@ -141,9 +141,13 @@ def main(model_names: list[str]) -> None:
                 _tc = os.path.join(_local, "tokenizer_config.json")
                 if os.path.exists(_tc):
                     _cfg = _json.load(open(_tc))
-                    if _cfg.pop("processor_class", None) is not None:
+                    _changed = _cfg.pop("processor_class", None) is not None
+                    if _cfg.get("padding_side") != "left":  # Gemma3 last-token pooling needs LEFT-pad
+                        _cfg["padding_side"] = "left"
+                        _changed = True
+                    if _changed:
                         _json.dump(_cfg, open(_tc, "w"), ensure_ascii=False, indent=2)
-                        print("  [load] stripped stray processor_class", flush=True)
+                        print("  [load] patched tokenizer_config (processor_class strip + padding_side=left)", flush=True)
                 model = SentenceTransformerEncoderWrapper(
                     _local, trust_remote_code=True,
                     model_kwargs={"torch_dtype": _torch.bfloat16},
