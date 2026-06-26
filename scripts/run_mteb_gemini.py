@@ -212,7 +212,7 @@ def main():
     t0 = time.time()
     print("\n=== model: google/gemini-embedding-001 ===", flush=True)
     try:
-        mteb.evaluate(GeminiModel(), tasks=tasks, overwrite_strategy="only-missing",
+        mteb.evaluate(GeminiModel(), tasks=tasks, overwrite_strategy=os.environ.get("MTEB_OVERWRITE", "only-missing"),
                       encode_kwargs={"batch_size": 100}, raise_error=False)
         print(f"=== gemini done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
     except Exception as e:  # noqa: BLE001
