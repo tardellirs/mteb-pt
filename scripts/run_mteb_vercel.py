@@ -64,7 +64,7 @@ class VercelGatewayModel(AbsEncoder):
         self.model_id = model_id
         self.client = OpenAI(api_key=os.environ["VERCEL_AI_GATEWAY_KEY"], base_url=BASE_URL)
         self.batch = int(os.environ.get("VERCEL_BATCH_SIZE", "64"))
-        self._dim = dim
+        self._dim = None  # auto-detected from the first successful embedding
         self.mteb_model_meta = ModelMeta(
             loader=None, name=model_id, revision="api", release_date="2025-06-01",
             languages=["por-Latn"], n_parameters=None, memory_usage_mb=None,
@@ -76,22 +76,27 @@ class VercelGatewayModel(AbsEncoder):
 
     def _embed(self, texts: list[str]) -> np.ndarray:
         texts = [(t[:MAX_CHARS] if t else " ") or " " for t in texts]
-        # pre-split if the batch is token-heavy (~3 chars/token, keep < 90k)
         if len(texts) > 1 and sum(len(t) for t in texts) // 3 > 90000:
             mid = len(texts) // 2
             return np.concatenate([self._embed(texts[:mid]), self._embed(texts[mid:])], axis=0)
         for delay in (2, 5, 15, 30, 60, None):
             try:
                 r = self.client.embeddings.create(model=self.model_id, input=texts)
-                return np.array([d.embedding for d in r.data], dtype=np.float32)
+                vecs = [d.embedding for d in r.data]
+                if self._dim is None:
+                    self._dim = len(vecs[0])  # auto-detect so give-up zeros always match
+                return np.array(vecs, dtype=np.float32)
             except Exception as e:  # noqa: BLE001
                 msg = str(e).lower()
-                if any(s in msg for s in ("too long", "too large", "max", "exceed", "token")) and len(texts) > 1:
-                    mid = len(texts) // 2
-                    return np.concatenate([self._embed(texts[:mid]), self._embed(texts[mid:])], axis=0)
+                if any(s in msg for s in ("too long", "too large", "maximum", "exceed", "token", "input length")):
+                    if len(texts) > 1:
+                        mid = len(texts) // 2
+                        return np.concatenate([self._embed(texts[:mid]), self._embed(texts[mid:])], axis=0)
+                    texts = [texts[0][: max(1, len(texts[0]) // 2)]]  # single text too long -> halve + retry
+                    continue
                 if delay is None:
-                    print(f"  [vercel] giving up on a batch: {str(e)[:120]}", flush=True)
-                    return np.zeros((len(texts), self._dim), dtype=np.float32)
+                    print(f"  [vercel] giving up on a batch: {str(e)[:100]}", flush=True)
+                    return np.zeros((len(texts), self._dim or 1536), dtype=np.float32)
                 time.sleep(delay)
 
     def encode(self, inputs, *, task_metadata=None, hf_split=None, hf_subset=None,
