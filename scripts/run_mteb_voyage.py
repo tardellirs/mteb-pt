@@ -72,6 +72,8 @@ class VoyageContextModel(AbsEncoder):
         self._last_req = 0.0
         self._min_gap = 60.0 / RPM            # seconds between requests (RPM cap)
         self._max_tok_per_req = max(1000, int(TPM / max(RPM, 1)))  # stay under TPM
+        self._ctx = "context" in MODEL_ID   # contextualized vs standard embed
+        self._dim = None                     # auto-detected from first embedding
         self.mteb_model_meta = ModelMeta(
             loader=None, name=f"voyage/{MODEL_ID}", revision="api",
             release_date="2026-06-01", languages=["por-Latn"], n_parameters=None,
@@ -89,21 +91,25 @@ class VoyageContextModel(AbsEncoder):
             self._last_req = time.time()
 
     def _call(self, batch, input_type):
-        # batch: list[str]; always wrap each text as a single-chunk document.
-        wrapped = [[t[:30000] if t else " "] for t in batch] or [[" "]]
         for delay in (5, 20, 45, 90, None):
             self._throttle()
             try:
-                r = self.client.contextualized_embed(
-                    inputs=wrapped, model=MODEL_ID, input_type=input_type,
-                    output_dimension=DIM,
-                )
-                return [res.embeddings[0] for res in r.results]
+                if self._ctx:  # contextualized: each text as a single-chunk doc
+                    wrapped = [[(t[:30000] if t else " ") or " "] for t in batch]
+                    r = self.client.contextualized_embed(inputs=wrapped, model=MODEL_ID, input_type=input_type)
+                    embs = [res.embeddings[0] for res in r.results]
+                else:           # standard embed: flat list
+                    texts = [(t[:30000] if t else " ") or " " for t in batch]
+                    r = self.client.embed(texts, model=MODEL_ID, input_type=input_type)
+                    embs = list(r.embeddings)
+                if self._dim is None and embs:
+                    self._dim = len(embs[0])  # native dim per model
+                return embs
             except Exception as e:  # noqa: BLE001 -- 429 / transient -> back off
                 msg = str(e).lower()
                 if delay is None:
                     print(f"  [voyage] give-up batch: {str(e)[:110]}", flush=True)
-                    return [[0.0] * DIM] * len(batch)
+                    return [[0.0] * (self._dim or 1024)] * len(batch)
                 extra = 45 if ("rate" in msg or "429" in msg or "limit" in msg) else 0
                 print(f"  [voyage] retry ({str(e)[:60]}) wait {delay + extra}s", flush=True)
                 time.sleep(delay + extra)
