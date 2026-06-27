@@ -100,14 +100,14 @@ class GeminiModel(AbsEncoder):
         out = []
         for i in range(0, len(texts), 100):
             chunk = [(t[:30000] if t else " ") or " " for t in texts[i:i + 100]]
-            for delay in (2, 5, 15, 30, 60, None):
+            for delay in (5, 15, 30, 60, 120, 240, 480, None):
                 try:
                     r = self.client.models.embed_content(model=MODEL_ID, contents=chunk, config=self._cfg(task_type))
                     out.extend([e.values for e in r.embeddings]); break
                 except Exception as e:  # noqa: BLE001
                     if delay is None:
-                        print(f"  [gemini] sync give-up: {str(e)[:100]}", flush=True)
-                        out.extend([[0.0] * DIM] * len(chunk)); break
+                        print(f"  [gemini] sync FAILED after ~16min retries -> RAISE (never zero-vec): {str(e)[:80]}", flush=True)
+                        raise  # fail the task cleanly; mteb skips it -> re-run, instead of corrupting with zero-vec
                     time.sleep(delay)
         return np.array(out, dtype=np.float32)
 
