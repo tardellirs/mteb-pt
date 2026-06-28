@@ -37,6 +37,24 @@ import shutil
 import threading
 import time
 
+# ─── Nemotron-8B compat shim (guarded by MTEB_NEMOTRON_SHIM) ────────────────────
+# nvidia/llama-embed-nemotron-8b's loader pins transformers==4.51.0 exact because its
+# custom LlamaBidirectionalModel overrides _update_causal_mask() for BIDIRECTIONAL
+# attention. transformers 5.x REMOVED that method, so the override is silently ignored
+# → model runs CAUSAL → wrong embeddings (no crash). Fix: spoof the version guard AND
+# set is_causal=False so transformers 5.x routes to its native create_bidirectional_mask().
+if os.environ.get("MTEB_NEMOTRON_SHIM"):
+    import transformers as _tf
+    _tf.__version__ = "4.51.0"
+    from transformers.models.llama.configuration_llama import LlamaConfig as _LC
+    _orig_lc_init = _LC.__init__
+    def _patched_lc_init(self, **kw):
+        _orig_lc_init(self, **kw)
+        if getattr(self, "use_bidirectional_attention", False):
+            self.is_causal = False
+    _LC.__init__ = _patched_lc_init
+    print("[shim] nemotron bidirectional shim active (tf->4.51.0 spoof + is_causal=False)", flush=True)
+
 import mteb
 
 import mteb_pt
@@ -183,10 +201,19 @@ def main(model_names: list[str]) -> None:
             # (removido o wrapper _te de truncacao do BRTaxQAR: reconstruia o input do encode
             #  como lista e quebrava o RETRIEVAL com "'list' object has no attribute 'dataset'".
             #  BRTaxQAR roda sem truncacao -- nao causa OOM na pratica.)
-            mteb.evaluate(
-                model, tasks=tasks, overwrite_strategy=os.environ.get("MTEB_OVERWRITE", "only-missing"),
-                encode_kwargs={"batch_size": bs}, raise_error=False,
-            )
+            # Tasks de texto LONGO (BRTaxQAR docs-monstro, JurisTCUClustering corpus grande)
+            # estouram VRAM em batch grande MESMO em modelo pequeno (atencao O(seq^2)) e
+            # ate em A100-80. -> cap de batch <=16 SO nessas; o resto mantem o batch padrao.
+            _HEAVY = {"BRTaxQAR", "JurisTCUClusteringP2P"}
+            _ov = os.environ.get("MTEB_OVERWRITE", "only-missing")
+            _light = [t for t in tasks if t.metadata.name not in _HEAVY]
+            _heavy = [t for t in tasks if t.metadata.name in _HEAVY]
+            if _light:
+                mteb.evaluate(model, tasks=_light, overwrite_strategy=_ov,
+                              encode_kwargs={"batch_size": bs}, raise_error=False)
+            if _heavy:
+                mteb.evaluate(model, tasks=_heavy, overwrite_strategy=_ov,
+                              encode_kwargs={"batch_size": min(bs, 16)}, raise_error=False)
             # ROOT-FIX anti-LIXO: o ST-fallback grava no slug-path-local
             # (__root__hfmodels__models--ORG--MODEL__snapshots__SHA/no_revision_available/).
             # mteb_model_meta.name NAO redireciona -> renomeia o LIXO pro slug limpo aqui,
