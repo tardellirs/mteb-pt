@@ -180,7 +180,7 @@ def _n_files(root):
 def pull_from_hf():
     os.makedirs(RESULTS, exist_ok=True)
     try:
-        snapshot_download(REPO, repo_type="dataset", allow_patterns="results/**", local_dir=CACHE, token=TOKEN)
+        snapshot_download(REPO, repo_type="dataset", allow_patterns=f"results/google__{MODEL_ID}/**", local_dir=CACHE, token=TOKEN)
         print(f"[hf-resume] pulled {_n_files(RESULTS)} files", flush=True)
     except Exception as e:
         print(f"[hf-resume] pull skipped ({str(e)[:90]})", flush=True)
