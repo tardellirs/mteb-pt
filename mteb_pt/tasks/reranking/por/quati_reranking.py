@@ -10,7 +10,7 @@ lexical hard negatives drawn from a realistic first stage — under Quati's grad
 relevance scale 0-3. This isolates reranking ability from first-stage retrieval.
 
 Candidates are precomputed (BM25 via bm25s over the 1M corpus, Portuguese
-stemming) and pinned at tardellirs/mteb-pt-quati-reranking
+stemming) and pinned at mteb-pt/quati-reranking
 (corpus / queries / qrels / top_ranked configs).
 
 Domain pairing for the reranking story:
@@ -25,7 +25,7 @@ from typing import Any
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskRetrieval
 
-_REPO = "tardellirs/mteb-pt-quati-reranking"
+_REPO = "mteb-pt/quati-reranking"
 _REVISION = "68d40ca9a44e8ea0704fb628f31ace070c16bdbc"
 
 

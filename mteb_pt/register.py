@@ -24,8 +24,8 @@ from mteb.get_tasks import _TASKS_REGISTRY
 
 from mteb_pt.tasks.classification.por.factckbr import FactckBrClassification
 from mteb_pt.tasks.classification.por.hate_br import HateBR
+from mteb_pt.tasks.classification.por.portulex_rrip import PortuLexRRIP
 from mteb_pt.tasks.classification.por.toxsyn_pt import ToxSynPT
-from mteb_pt.tasks.clustering.por.camara_proposicoes import CamaraProposicoesClustering
 from mteb_pt.tasks.clustering.por.juris_tcu_clustering import JurisTCUClusteringP2P
 from mteb_pt.tasks.clustering.por.medpt_clustering import MedPTClustering
 from mteb_pt.tasks.clustering.por.scielo_clustering import SciELOClusteringP2P
@@ -36,12 +36,8 @@ from mteb_pt.tasks.clustering.por.wikipedia_pt_categories import (
 from mteb_pt.tasks.multilabel_classification.por.brighter_emotion import (
     BrighterEmotionMultilabelClassification,
 )
-from mteb_pt.tasks.multilabel_classification.por.olid_br import OlidBrMultilabelClassification
 from mteb_pt.tasks.pair_classification.por.assin_rte import AssinRTE
 from mteb_pt.tasks.pair_classification.por.infer_br import InferBR
-from mteb_pt.tasks.regression.por.brighter_intensity import BrighterEmotionIntensityRegression
-from mteb_pt.tasks.regression.por.enem_essay import EnemEssayRegression
-from mteb_pt.tasks.regression.por.narrative_essays import NarrativeEssaysBRRegression
 from mteb_pt.tasks.reranking.por.juris_tcu_reranking import JurisTCUReranking
 from mteb_pt.tasks.reranking.por.quati_reranking import QuatiReranking
 from mteb_pt.tasks.retrieval.por.br_taxqa_r import BRTaxQAR
@@ -56,14 +52,11 @@ _TASKS_TO_REGISTER = [
     HateBR,
     FactckBrClassification,
     ToxSynPT,
+    PortuLexRRIP,
     AssinRTE,
     InferBR,
     AssinSTS,
-    EnemEssayRegression,
-    NarrativeEssaysBRRegression,
-    BrighterEmotionIntensityRegression,
     BrighterEmotionMultilabelClassification,
-    OlidBrMultilabelClassification,
     Quati,
     QuatiReranking,
     JurisTCU,
@@ -76,7 +69,6 @@ _TASKS_TO_REGISTER = [
     MedPTClustering,
     JurisTCUClusteringP2P,
     SciELOClusteringP2P,
-    CamaraProposicoesClustering,
     StackoverflowPtClustering,
 ]
 

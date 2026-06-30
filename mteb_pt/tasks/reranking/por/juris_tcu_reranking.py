@@ -11,7 +11,7 @@ ability from first-stage retrieval: unlike a qrels-restricted corpus, the
 candidate pool contains plausible distractors a model must order correctly.
 
 Candidates are precomputed (BM25 via bm25s, Portuguese stemming) and pinned at
-tardellirs/mteb-pt-juristcu-reranking (corpus / queries / qrels / top_ranked).
+mteb-pt/juristcu-reranking (corpus / queries / qrels / top_ranked).
 
 Domain pairing for the reranking story:
 - QuatiReranking    — web / general PT-BR
@@ -27,7 +27,7 @@ from typing import Any
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskRetrieval
 
-_REPO = "tardellirs/mteb-pt-juristcu-reranking"
+_REPO = "mteb-pt/juristcu-reranking"
 _REVISION = "83d1eec1aac2ba4e639d72c32a34b4efe70aef82"
 
 

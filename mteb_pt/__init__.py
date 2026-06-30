@@ -33,32 +33,27 @@ from __future__ import annotations
 
 __version__ = "2.0.0"
 
-#: The 26 MTEB(por, v2) tasks — all native Brazilian Portuguese, no translation,
+#: The 22 MTEB(por, v2) tasks — all native Brazilian Portuguese, no translation,
 #: spanning 8 MTEB task-types.
 HEADLINE_TASKS: list[str] = [
-    # Classification (3)
+    # Classification (4)
     "HateBR",
     "ToxSynPT",
     "FactckBrClassification",
-    # Multi-label classification (2)
+    "PortuLexRRIP",
+    # Multi-label classification (1)
     "BrighterEmotionMultilabelClassification",
-    "OlidBrMultilabelClassification",
-    # Regression (3)
-    "EnemEssayRegression",
-    "NarrativeEssaysBRRegression",
-    "BrighterEmotionIntensityRegression",
     # Pair classification / NLI (2)
     "AssinRTE",
     "InferBR",
     # Semantic textual similarity (2)
     "AssinSTS",
     "Assin2STS",
-    # Clustering (6)
+    # Clustering (5)
     "WikipediaPTCategoriesClusteringP2P",
     "MedPTClustering",
     "JurisTCUClusteringP2P",
     "SciELOClusteringP2P",
-    "CamaraProposicoesClustering",
     "StackoverflowPtClustering",
     # Retrieval (6)
     "Quati",
@@ -72,18 +67,10 @@ HEADLINE_TASKS: list[str] = [
     "JurisTCUReranking",
 ]
 
-#: Per-category groupings (the 8 MTEB task-types covered).
+#: Per-category groupings (the 7 MTEB task-types covered).
 TASKS_BY_CATEGORY: dict[str, list[str]] = {
-    "Classification": ["HateBR", "ToxSynPT", "FactckBrClassification"],
-    "MultilabelClassification": [
-        "BrighterEmotionMultilabelClassification",
-        "OlidBrMultilabelClassification",
-    ],
-    "Regression": [
-        "EnemEssayRegression",
-        "NarrativeEssaysBRRegression",
-        "BrighterEmotionIntensityRegression",
-    ],
+    "Classification": ["HateBR", "ToxSynPT", "FactckBrClassification", "PortuLexRRIP"],
+    "MultilabelClassification": ["BrighterEmotionMultilabelClassification"],
     "PairClassification": ["AssinRTE", "InferBR"],
     "STS": ["AssinSTS", "Assin2STS"],
     "Clustering": [
@@ -91,7 +78,6 @@ TASKS_BY_CATEGORY: dict[str, list[str]] = {
         "MedPTClustering",
         "JurisTCUClusteringP2P",
         "SciELOClusteringP2P",
-        "CamaraProposicoesClustering",
         "StackoverflowPtClustering",
     ],
     "Retrieval": [
@@ -105,4 +91,7 @@ TASKS_BY_CATEGORY: dict[str, list[str]] = {
     "Reranking": ["QuatiReranking", "JurisTCUReranking"],
 }
 
-__all__ = ["HEADLINE_TASKS", "TASKS_BY_CATEGORY", "__version__"]
+#: No pending/gated tasks: all 22 headline tasks are released and licensed.
+PENDING_TASKS: list[str] = []
+
+__all__ = ["HEADLINE_TASKS", "PENDING_TASKS", "TASKS_BY_CATEGORY", "__version__"]

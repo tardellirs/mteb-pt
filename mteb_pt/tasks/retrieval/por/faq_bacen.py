@@ -5,7 +5,7 @@ Central do Brasil (BACEN) public FAQ on financial and banking regulation.
 Reformulated as retrieval: given a citizen question, retrieve the correct
 regulatory answer from the pool of 1673 unique answers (373 test questions).
 Fills the Financial domain (absent from the suite) and a consumer/regulatory
-FAQ-retrieval gap. Repackaged + pinned at tardellirs/mteb-pt-faq-bacen.
+FAQ-retrieval gap. Repackaged + pinned at mteb-pt/faq-bacen.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from typing import Any
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskRetrieval
 
-_REPO = "tardellirs/mteb-pt-faq-bacen"
+_REPO = "mteb-pt/faq-bacen"
 _REVISION = "076d89a68a8b8d2f14e3161631c416ffe29b8463"
 
 

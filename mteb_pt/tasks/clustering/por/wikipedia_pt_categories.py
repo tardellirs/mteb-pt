@@ -1,6 +1,6 @@
 """WikipediaPTCategoriesClusteringP2P — cluster PT Wikipedia article paragraphs by category.
 
-Dataset: tardellirs/wikipedia-pt-categories
+Dataset: mteb-pt/wikipedia-categories
 Built from MediaWiki API category traversal of 15 broad PT categories
 (História, Geografia, Política, Esporte, Música, Cinema, Literatura, Religião,
 Ciência, Tecnologia, Animais, Plantas, Medicina, Filosofia, Astronomia).
@@ -19,7 +19,7 @@ from __future__ import annotations
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskClustering
 
-_REPO = "tardellirs/wikipedia-pt-categories"
+_REPO = "mteb-pt/wikipedia-categories"
 _REVISION = "ff433edc23c7e2dd3304da3fb7d0edba6356001a"
 
 
@@ -36,7 +36,7 @@ class WikipediaPTCategoriesClusteringP2P(AbsTaskClustering):
             "Articles sampled via MediaWiki API category traversal (depth 2) "
             "of curated root categories; first paragraph from the `extracts` API."
         ),
-        reference="https://huggingface.co/datasets/tardellirs/wikipedia-pt-categories",
+        reference="https://huggingface.co/datasets/mteb-pt/wikipedia-categories",
         dataset={
             "path": _REPO,
             "revision": _REVISION,
@@ -59,7 +59,7 @@ class WikipediaPTCategoriesClusteringP2P(AbsTaskClustering):
   author = {Stekel, Tardelli Ronan Coelho},
   year   = {2026},
   howpublished = {HuggingFace Dataset},
-  note   = {Available at \url{https://huggingface.co/datasets/tardellirs/wikipedia-pt-categories}},
+  note   = {Available at \url{https://huggingface.co/datasets/mteb-pt/wikipedia-categories}},
 }""",
     )
 

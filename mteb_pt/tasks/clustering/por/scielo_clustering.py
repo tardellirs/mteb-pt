@@ -8,7 +8,7 @@ first_category (298 fine categories) is consolidated into 8 broad research
 areas (Health Sciences, Social Sciences, Agricultural Sciences,
 Biological/Life Sciences, Humanities & Arts, Engineering & Technology,
 Physical Sciences & Chemistry, Mathematics & Computer Science). Capped to
-500 abstracts/area for balance; built as tardellirs/mteb-pt-scielo-clustering.
+500 abstracts/area for balance; built as mteb-pt/scielo-clustering.
 
 Adds a formal-academic register orthogonal to the encyclopedic (Wikipedia),
 legal (JurisTCU) and biomedical-QA (MedPT) clustering tasks.
@@ -19,7 +19,7 @@ from __future__ import annotations
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskClustering
 
-_REPO = "tardellirs/mteb-pt-scielo-clustering"
+_REPO = "mteb-pt/scielo-clustering"
 _REVISION = "c84cafc4789b384b8cdd1d6bc2c22966e7e36f03"
 
 
@@ -37,7 +37,7 @@ class SciELOClusteringP2P(AbsTaskClustering):
             "consolidated from the Web-of-Science subject categories of each "
             "article; only pure CC-BY-4.0 articles are included."
         ),
-        reference="https://huggingface.co/datasets/tardellirs/mteb-pt-scielo-clustering",
+        reference="https://huggingface.co/datasets/mteb-pt/scielo-clustering",
         dataset={
             "path": _REPO,
             "revision": _REVISION,

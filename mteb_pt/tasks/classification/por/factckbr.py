@@ -8,7 +8,7 @@ Quality notes: the input is the CLAIM text only (`claimReviewed`), NOT the
 fact-check article title (which leaks the verdict). The dataset is heavily
 imbalanced (~72% falso), reflecting the fact-checking process itself. News /
 fact-check domain (absent from the suite). Repackaged + pinned at
-tardellirs/mteb-pt-factckbr.
+mteb-pt/factckbr.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from __future__ import annotations
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskClassification
 
-_REPO = "tardellirs/mteb-pt-factckbr"
+_REPO = "mteb-pt/factckbr"
 _REVISION = "a57f556588718d0af1a81ef89cf10e8719f8454a"
 
 

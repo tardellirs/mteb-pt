@@ -96,7 +96,7 @@ class BRTaxQAR(AbsTaskRetrieval):
         corpus: dict[str, dict[str, str]] = {}
         for d in docs_raw:
             fname = d.get("filename", "").strip()
-            text = d.get("filedata", "").strip()
+            text = d.get("filedata", "").strip()[:32000]  # cap docs-monstro (codigos tributarios ate ~292K tok): atencao O(seq^2) estoura VRAM em QQ modelo; 32K chars ~ 8K tok cobre o relevante e torna o retrieval factivel
             if not fname or not text:
                 continue
             docid = fname[:-4] if fname.endswith(".txt") else fname

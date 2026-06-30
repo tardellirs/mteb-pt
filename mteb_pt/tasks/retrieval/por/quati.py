@@ -7,12 +7,13 @@ Quati ships 50 native PT-BR test topics + ~1,900 human relevance judgements over
 a 1M Brazilian web passage pool (ClueWeb22-PT) — the first retrieval benchmark
 designed natively for PT-BR (no translation).
 
-For tractability we evaluate over a **250k subsample** of the corpus that keeps
+For tractability we evaluate over a **50k subsample** of the corpus that keeps
 ALL judged passages plus a fixed random sample (seed 42) of the rest — an
-accepted MTEB practice for very large corpora. This keeps Quati a hard
-large-scale retrieval task while making the suite ~4x cheaper to run and re-run
-(Quati was ~93% of the per-model encoding load at 1M). Repackaged + pinned at
-tardellirs/mteb-pt-quati-250k (corpus / queries / qrels configs).
+accepted MTEB practice for very large corpora. Even at 50k Quati is ~78% of the
+per-model encoding load (it was ~95% at 250k / ~99% at the full 1M pool); the cut
+makes the suite ~4x cheaper to run and re-run while keeping a large, hard,
+well-discriminating corpus (all gold preserved). Repackaged + pinned at
+mteb-pt/quati-50k (corpus / queries / qrels configs).
 """
 
 from __future__ import annotations
@@ -22,12 +23,12 @@ from typing import Any
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskRetrieval
 
-_REPO = "tardellirs/mteb-pt-quati-250k"
-_REVISION = "7440d16aa3a53c037e63a16591c461210b72dd82"
+_REPO = "mteb-pt/quati-50k"
+_REVISION = "5cb87d9561d8ace807305f50e59a4b0af352da2e"
 
 
 class Quati(AbsTaskRetrieval):
-    """Quati — Brazilian Portuguese native web retrieval, 50 topics over a 250k pool."""
+    """Quati — Brazilian Portuguese native web retrieval, 50 topics over a 50k pool."""
 
     metadata = TaskMetadata(
         name="Quati",
@@ -36,7 +37,7 @@ class Quati(AbsTaskRetrieval):
             "topics with ~1,900 human relevance judgements over a Brazilian web "
             "passage pool (ClueWeb22-PT). First PT-BR retrieval benchmark designed "
             "without translation; queries are naturally-occurring Brazilian web "
-            "questions. Evaluated over a 250k corpus subsample (all judged passages "
+            "questions. Evaluated over a 50k corpus subsample (all judged passages "
             "plus a fixed random sample of the 1M pool) for tractability."
         ),
         reference="https://aclanthology.org/2024.stil-1.19/",

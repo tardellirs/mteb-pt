@@ -20,7 +20,7 @@ jurisprudence + BR-TaxQA-R tax law) with ACADEMIC/educational domain
 retrieval, completing the multi-domain story.
 
 Repackaged into MTEB retrieval format (corpus / queries / qrels configs) and
-pinned at tardellirs/mteb-pt-faquad-ir for reproducibility (the original ships
+pinned at mteb-pt/faquad-ir for reproducibility (the original ships
 as SQuAD JSON on GitHub, not Hub-resolvable; this is the same data reshaped).
 
 License: CC-BY-4.0 (declared in the FaQuAD HF mirror README).
@@ -33,7 +33,7 @@ from typing import Any
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskRetrieval
 
-_REPO = "tardellirs/mteb-pt-faquad-ir"
+_REPO = "mteb-pt/faquad-ir"
 _REVISION = "51fd9e7707bb4971229a0189560379992c3adce2"
 
 

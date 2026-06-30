@@ -26,7 +26,7 @@ checkpointed early -- a later preemption then only re-does a cheap task.
 Resume after a spot kill: just re-run the SAME command. Nothing re-downloads and
 finished (model, task) pairs are skipped.
 
-NOTE: this runs the 26 license-clean native tasks. Gated tasks (PortuLex, PAGICO,
+NOTE: this runs the 22 license-clean native tasks. Other candidate tasks (PAGICO,
 Ulysses, SICK-Br) are added to the suite only once their licenses clear.
 """
 
@@ -38,6 +38,7 @@ import time
 
 import mteb
 
+import mteb_pt
 import mteb_pt.register as register
 
 # Registered for backward-compat but NOT part of the v2 native suite.
@@ -47,7 +48,8 @@ _PRIORITY = {"Retrieval": 0, "Reranking": 1, "Clustering": 2}
 
 
 def v2_tasks():
-    """The 26-task native suite: our 25 registered tasks + Assin2STS (upstream, native NILC)."""
+    """The MTEB(por, v2) suite: the 22 headline tasks — the 21 registered in
+    mteb_pt.register plus Assin2STS from upstream mteb."""
     tasks = [cls() for cls in register._TASKS_TO_REGISTER if cls.metadata.name not in _EXCLUDED]
     tasks.append(mteb.get_task("Assin2STS"))
     tasks.sort(key=lambda t: _PRIORITY.get(t.metadata.type, 9))
@@ -57,25 +59,30 @@ def v2_tasks():
 def main(model_names: list[str]) -> None:
     tasks = v2_tasks()
     bs = int(os.environ.get("MTEB_BATCH_SIZE", "64"))
+    n_pending = sum(1 for t in tasks if t.metadata.name in mteb_pt.PENDING_TASKS)
     print(
-        f"MTEB(por,v2): {len(tasks)} tasks | order={[t.metadata.name for t in tasks][:4]}... "
-        f"| HF_HOME={os.environ.get('HF_HOME', 'default')} "
+        f"MTEB(por,v2): {len(tasks)} tasks ({len(tasks) - n_pending} headline + {n_pending} pending: "
+        f"{mteb_pt.PENDING_TASKS}) | HF_HOME={os.environ.get('HF_HOME', 'default')} "
         f"| MTEB_CACHE={os.environ.get('MTEB_CACHE', '~/.cache/mteb')} | batch_size={bs}",
         flush=True,
     )
     for mname in model_names:
         t0 = time.time()
         print(f"\n=== model: {mname} ===", flush=True)
-        model = mteb.get_model(mname)
-        # only-missing => resumable; raise_error=False => one bad task doesn't kill the model run.
-        mteb.evaluate(
-            model,
-            tasks=tasks,
-            overwrite_strategy="only-missing",
-            encode_kwargs={"batch_size": bs},
-            raise_error=False,
-        )
-        print(f"=== {mname} done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
+        try:
+            model = mteb.get_model(mname)
+            # only-missing => resumable; raise_error=False => one bad task doesn't kill the model run.
+            mteb.evaluate(
+                model,
+                tasks=tasks,
+                overwrite_strategy="only-missing",
+                encode_kwargs={"batch_size": bs},
+                raise_error=False,
+            )
+            print(f"=== {mname} done in {(time.time() - t0) / 60:.1f} min ===", flush=True)
+        except Exception as e:  # a bad model must not halt the whole fleet
+            print(f"=== {mname} FAILED: {type(e).__name__}: {str(e)[:200]} ===", flush=True)
+    print("=== FLEET RUN COMPLETE ===", flush=True)
 
 
 if __name__ == "__main__":

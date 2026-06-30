@@ -5,7 +5,7 @@ EXCERTO field (long jurisprudence excerpt, HTML stripped) labelled by the
 existing AREA taxonomy (10 balanced-ish legal areas: Pessoal, Licitação,
 Responsabilidade, Direito Processual, Contrato Administrativo, Convênio,
 Competência do TCU, Finanças Públicas, Gestão Administrativa, Desestatização).
-Capped to 500 docs/area for balance; built as tardellirs/mteb-pt-juristcu-clustering.
+Capped to 500 docs/area for balance; built as mteb-pt/juristcu-clustering.
 
 Pairs with the JurisTCU retrieval task (same corpus): does a model that
 retrieves well in a legal domain also cluster well in it? (cross-task probe).
@@ -16,7 +16,7 @@ from __future__ import annotations
 from mteb import TaskMetadata
 from mteb.abstasks import AbsTaskClustering
 
-_REPO = "tardellirs/mteb-pt-juristcu-clustering"
+_REPO = "mteb-pt/juristcu-clustering"
 _REVISION = "f933f2e7b8186ecafe65b79b246099e63d33eecb"
 
 
@@ -33,7 +33,7 @@ class JurisTCUClusteringP2P(AbsTaskClustering):
             "Documents are the EXCERTO field of the JurisTCU corpus, labelled by "
             "TCU's own AREA taxonomy."
         ),
-        reference="https://huggingface.co/datasets/tardellirs/mteb-pt-juristcu-clustering",
+        reference="https://huggingface.co/datasets/mteb-pt/juristcu-clustering",
         dataset={
             "path": _REPO,
             "revision": _REVISION,

@@ -1,4 +1,4 @@
-"""Smoke tests: verify all 26 MTEB(por, v2) tasks register and resolve through mteb."""
+"""Smoke tests: verify all 22 MTEB(por, v2) tasks register and resolve through mteb."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ import mteb_pt.register  # noqa: F401  -- side-effect import: registers tasks
 
 
 def test_headline_tasks_count() -> None:
-    """HEADLINE_TASKS should list exactly 26 task names."""
-    assert len(mteb_pt.HEADLINE_TASKS) == 26
+    """HEADLINE_TASKS should list exactly 22 task names."""
+    assert len(mteb_pt.HEADLINE_TASKS) == 22
 
 
 def test_tasks_by_category_matches_headline_set() -> None:
