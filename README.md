@@ -7,6 +7,7 @@
 [![Leaderboard](https://img.shields.io/badge/🤗-Leaderboard-yellow)](https://huggingface.co/spaces/mteb-pt/leaderboard)
 [![Results](https://img.shields.io/badge/🤗-Dataset-blue)](https://huggingface.co/datasets/mteb-pt/mteb-pt-results)
 [![Org](https://img.shields.io/badge/🤗-mteb--pt-green)](https://huggingface.co/mteb-pt)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21087217.svg)](https://doi.org/10.5281/zenodo.21087217)
 [![License: Apache 2.0](https://img.shields.io/badge/License_(code)-Apache_2.0-blue)](LICENSE)
 [![License: CC-BY-4.0](https://img.shields.io/badge/License_(data)-CC--BY--4.0-orange)](https://creativecommons.org/licenses/by/4.0/)
 
@@ -148,11 +149,12 @@ Contributions, corrections, and discussion all welcome via Issues or HF Discussi
 ## Citation
 
 ```bibtex
-@misc{mteb-portuguese-2026,
-  title  = {MTEB Portuguese: A Massive Text Embedding Benchmark for Brazilian Portuguese},
+@misc{mteb-pt-2026,
+  title  = {MTEB-PT: A Text Embedding Benchmark for Brazilian Portuguese},
   author = {Stekel, Tardelli},
   year   = {2026},
-  url    = {https://huggingface.co/spaces/mteb-pt/leaderboard}
+  doi    = {10.5281/zenodo.21087217},
+  url    = {https://doi.org/10.5281/zenodo.21087217}
 }
 ```
 
