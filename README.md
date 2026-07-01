@@ -151,7 +151,7 @@ Contributions, corrections, and discussion all welcome via Issues or HF Discussi
 ```bibtex
 @misc{mteb-pt-2026,
   title  = {MTEB-PT: A Text Embedding Benchmark for Brazilian Portuguese},
-  author = {Stekel, Tardelli},
+  author = {Stekel, Tardelli R. C.},
   year   = {2026},
   doi    = {10.5281/zenodo.21087217},
   url    = {https://doi.org/10.5281/zenodo.21087217}
